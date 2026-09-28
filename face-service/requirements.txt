@@ -1,0 +1,12 @@
+# Face service - 64-bit Python 3.12 (tested) or newer.
+# insightface >= 1.0 ships as a ready-made wheel, so no C++ Build Tools are needed.
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+pydantic-settings>=2.3
+numpy>=2.0
+opencv-python-headless>=4.9
+onnxruntime>=1.20
+insightface>=2.0,<3.0
+# insightface 2.0 calls an API that scikit-image deprecated and removes in 2.2
+scikit-image<2.2

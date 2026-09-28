@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Dear {{ full_name }},</p>
+<p>A new invoice has been created for you.</p>
+{% with rows = [("Invoice number", invoice_number), ("Fee", fee_name), ("Amount", amount), ("Due date", due_date)] %}{% include "_details.html" %}{% endwith %}
+<p style="text-align:center;margin:24px 0;">
+  <a href="{{ pay_url }}" style="background:#0b2e59;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:bold;display:inline-block;">View and pay</a>
+</p>
+<p style="font-size:13px;color:#475569;">Payments in this system are simulated - no real money is charged.</p>
+<p>{{ university }} Administration</p>
+{% endblock %}

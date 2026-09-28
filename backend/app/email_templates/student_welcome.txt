@@ -1,0 +1,15 @@
+Dear {{ full_name }},
+
+You have been registered successfully at {{ university }}.
+
+  Registration number (your login ID): {{ reg_number }}
+  Email on file:                       {{ email }}
+  Default password:                    {{ password }}
+
+Log in at: {{ login_url }}
+
+You can change your password at any time from your dashboard (Profile > Change
+password). Once the administrator has enrolled your face, you can also log in by
+simply looking at your camera.
+
+{{ university }} Administration

@@ -1,0 +1,14 @@
+Dear {{ full_name }},
+
+An {{ university }} {{ role_label }} account has been created for you.
+
+  Login email:      {{ email }}
+  Default password: {{ password }}
+
+Log in at: {{ login_url }}
+
+You can change your password at any time from your dashboard (Profile > Change
+password). Once your face has been enrolled, you can also log in by simply
+looking at your camera.
+
+{{ university }} Administration

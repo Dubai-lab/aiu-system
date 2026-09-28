@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Dear {{ full_name }},</p>
+<p>An {{ university }} {{ role_label }} account has been created for you.</p>
+{% with rows = [("Login email", email), ("Default password", password)] %}{% include "_credentials.html" %}{% endwith %}
+<p>You can change your password at any time from your dashboard (<strong>Profile &gt; Change password</strong>).</p>
+<p>Once your face has been enrolled, you can also log in by simply looking at your camera.</p>
+<p>{{ university }} Administration</p>
+{% endblock %}

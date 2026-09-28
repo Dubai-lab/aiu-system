@@ -1,0 +1,14 @@
+Dear {{ full_name }},
+
+A new invoice has been created for you.
+
+  Invoice number: {{ invoice_number }}
+  Fee:            {{ fee_name }}
+  Amount:         {{ amount }}
+  Due date:       {{ due_date }}
+
+View and pay: {{ pay_url }}
+
+Payments in this system are simulated - no real money is charged.
+
+{{ university }} Administration

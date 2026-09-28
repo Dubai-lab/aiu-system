@@ -1,0 +1,600 @@
+[
+  {
+    "key": "admin.dashboard",
+    "path": "/admin",
+    "title": "Dashboard",
+    "roles": [
+      "admin"
+    ],
+    "description": "Admin overview: totals, attendance today, invoices, recent registrations",
+    "aliases": [
+      "dashboard",
+      "home",
+      "overview",
+      "main page"
+    ],
+    "nav": true,
+    "icon": "dashboard"
+  },
+  {
+    "key": "admin.students",
+    "path": "/admin/students",
+    "title": "Students",
+    "roles": [
+      "admin"
+    ],
+    "description": "List and search registered students",
+    "aliases": [
+      "students",
+      "student list",
+      "all students"
+    ],
+    "nav": true,
+    "icon": "students"
+  },
+  {
+    "key": "admin.students.new",
+    "path": "/admin/students/new",
+    "title": "Register Student",
+    "roles": [
+      "admin"
+    ],
+    "description": "Form to register a new student",
+    "aliases": [
+      "register student",
+      "new student",
+      "add student"
+    ]
+  },
+  {
+    "key": "admin.teachers",
+    "path": "/admin/teachers",
+    "title": "Teachers",
+    "roles": [
+      "admin"
+    ],
+    "description": "List and search teachers",
+    "aliases": [
+      "teachers",
+      "lecturers",
+      "staff list"
+    ],
+    "nav": true,
+    "icon": "teachers"
+  },
+  {
+    "key": "admin.teachers.new",
+    "path": "/admin/teachers/new",
+    "title": "Register Teacher",
+    "roles": [
+      "admin"
+    ],
+    "description": "Form to register a new teacher",
+    "aliases": [
+      "register teacher",
+      "new teacher",
+      "add lecturer"
+    ]
+  },
+  {
+    "key": "admin.admins",
+    "path": "/admin/admins",
+    "title": "Administrators",
+    "roles": [
+      "admin"
+    ],
+    "description": "List of administrators (Deans, HODs, officers)",
+    "aliases": [
+      "administrators",
+      "admins"
+    ],
+    "nav": true,
+    "icon": "admins"
+  },
+  {
+    "key": "admin.admins.new",
+    "path": "/admin/admins/new",
+    "title": "Register Administrator",
+    "roles": [
+      "admin"
+    ],
+    "description": "Form to register a new administrator",
+    "aliases": [
+      "register admin",
+      "new administrator"
+    ]
+  },
+  {
+    "key": "admin.users.detail",
+    "path": "/admin/users/:id",
+    "title": "User Details",
+    "roles": [
+      "admin"
+    ],
+    "description": "One user's details, face status, password reset, resend credentials, deactivate",
+    "aliases": [
+      "user details",
+      "user page"
+    ],
+    "requires_params": [
+      "id"
+    ]
+  },
+  {
+    "key": "admin.users.face_enrollment",
+    "path": "/admin/users/:id/face-enrollment",
+    "title": "Face Enrollment",
+    "roles": [
+      "admin"
+    ],
+    "description": "Consent and 5-photo face capture for one user (the person must be at this computer)",
+    "aliases": [
+      "face enrollment",
+      "enroll face",
+      "register face"
+    ],
+    "requires_params": [
+      "id"
+    ]
+  },
+  {
+    "key": "admin.departments",
+    "path": "/admin/departments",
+    "title": "Departments",
+    "roles": [
+      "admin"
+    ],
+    "description": "Academic departments with course, student and teacher counts",
+    "aliases": [
+      "departments",
+      "faculties",
+      "department list"
+    ],
+    "nav": true,
+    "icon": "departments"
+  },
+  {
+    "key": "admin.courses",
+    "path": "/admin/courses",
+    "title": "Courses",
+    "roles": [
+      "admin"
+    ],
+    "description": "All courses with their teacher and number of enrolled students",
+    "aliases": [
+      "courses",
+      "course list",
+      "all courses",
+      "subjects"
+    ],
+    "nav": true,
+    "icon": "courses"
+  },
+  {
+    "key": "admin.courses.detail",
+    "path": "/admin/courses/:id",
+    "title": "Course Details",
+    "roles": [
+      "admin"
+    ],
+    "description": "One course: assign the teacher and see or remove enrolled students",
+    "aliases": [
+      "course page",
+      "course details"
+    ],
+    "requires_params": [
+      "id"
+    ]
+  },
+  {
+    "key": "admin.enrollments",
+    "path": "/admin/enrollments",
+    "title": "Enrollments",
+    "roles": [
+      "admin"
+    ],
+    "description": "Enroll students in a course",
+    "aliases": [
+      "enrollments",
+      "enroll students",
+      "course registration"
+    ],
+    "nav": true,
+    "icon": "enrollments"
+  },
+  {
+    "key": "admin.fees",
+    "path": "/admin/fees",
+    "title": "Fees",
+    "roles": [
+      "admin"
+    ],
+    "description": "Official fee types and amounts (tuition, medical insurance, registration, other)",
+    "aliases": [
+      "fees",
+      "fee types",
+      "fee list",
+      "tuition amount"
+    ],
+    "nav": true,
+    "icon": "fees"
+  },
+  {
+    "key": "admin.invoices",
+    "path": "/admin/invoices",
+    "title": "Invoices",
+    "roles": [
+      "admin"
+    ],
+    "description": "All student invoices with filters; create an invoice for a student; cancel an unpaid invoice",
+    "aliases": [
+      "invoices",
+      "all invoices",
+      "billing",
+      "payments"
+    ],
+    "nav": true,
+    "icon": "invoices"
+  },
+  {
+    "key": "admin.receipt",
+    "path": "/admin/receipts/:paymentId",
+    "title": "Receipt",
+    "roles": [
+      "admin"
+    ],
+    "description": "Printable receipt of a simulated payment",
+    "aliases": [
+      "receipt"
+    ],
+    "requires_params": [
+      "paymentId"
+    ]
+  },
+  {
+    "key": "admin.reports.attendance",
+    "path": "/admin/reports/attendance",
+    "title": "Attendance Report",
+    "roles": [
+      "admin"
+    ],
+    "description": "Attendance across all courses, filter by department, course and dates; low attendance highlighted; CSV export",
+    "aliases": [
+      "attendance report",
+      "reports",
+      "attendance",
+      "low attendance"
+    ],
+    "nav": true,
+    "icon": "reports"
+  },
+  {
+    "key": "admin.audit_logs",
+    "path": "/admin/audit-logs",
+    "title": "Audit Log",
+    "roles": [
+      "admin"
+    ],
+    "description": "Every change, login and assistant action with who did it and whether it was done by voice or by clicking; filter by action, via and dates",
+    "aliases": [
+      "audit log",
+      "audit logs",
+      "activity log",
+      "history of actions",
+      "voice actions",
+      "who did what"
+    ],
+    "nav": true,
+    "icon": "audit"
+  },
+  {
+    "key": "admin.email_logs",
+    "path": "/admin/email-logs",
+    "title": "Email Log",
+    "roles": [
+      "admin"
+    ],
+    "description": "Every email the system sent or failed to send; filter by status and type; failed login-detail emails link to the user to resend",
+    "aliases": [
+      "email log",
+      "email logs",
+      "emails",
+      "failed emails",
+      "sent emails"
+    ],
+    "nav": true,
+    "icon": "email"
+  },
+  {
+    "key": "admin.profile",
+    "path": "/admin/profile",
+    "title": "My Profile",
+    "roles": [
+      "admin"
+    ],
+    "description": "Personal details, change password and face enrollment status",
+    "aliases": [
+      "profile",
+      "my account",
+      "account settings",
+      "change password",
+      "settings"
+    ],
+    "nav": true,
+    "icon": "profile"
+  },
+  {
+    "key": "teacher.dashboard",
+    "path": "/teacher",
+    "title": "Dashboard",
+    "roles": [
+      "teacher"
+    ],
+    "description": "Teacher overview: my courses, open attendance session, recent attendance",
+    "aliases": [
+      "dashboard",
+      "home",
+      "overview",
+      "main page"
+    ],
+    "nav": true,
+    "icon": "dashboard"
+  },
+  {
+    "key": "teacher.courses",
+    "path": "/teacher/courses",
+    "title": "My Courses",
+    "roles": [
+      "teacher"
+    ],
+    "description": "Courses this teacher teaches",
+    "aliases": [
+      "my courses",
+      "courses",
+      "classes"
+    ],
+    "nav": true,
+    "icon": "courses"
+  },
+  {
+    "key": "teacher.courses.detail",
+    "path": "/teacher/courses/:id",
+    "title": "Course Details",
+    "roles": [
+      "teacher"
+    ],
+    "description": "One course the teacher teaches, with its enrolled students",
+    "aliases": [
+      "class list",
+      "course students"
+    ],
+    "requires_params": [
+      "id"
+    ]
+  },
+  {
+    "key": "teacher.attendance",
+    "path": "/teacher/attendance",
+    "title": "Attendance",
+    "roles": [
+      "teacher"
+    ],
+    "description": "Attendance sessions: start one, open the live session, session history",
+    "aliases": [
+      "attendance",
+      "sessions",
+      "attendance history"
+    ],
+    "nav": true,
+    "icon": "attendance"
+  },
+  {
+    "key": "teacher.attendance.new",
+    "path": "/teacher/attendance/new",
+    "title": "Start Attendance",
+    "roles": [
+      "teacher"
+    ],
+    "description": "Form to start an attendance session for a course",
+    "aliases": [
+      "start attendance",
+      "new session"
+    ]
+  },
+  {
+    "key": "teacher.attendance.session",
+    "path": "/teacher/attendance/:sessionId",
+    "title": "Live Attendance Session",
+    "roles": [
+      "teacher"
+    ],
+    "description": "Class code and live present list for one session",
+    "aliases": [
+      "live session",
+      "class code"
+    ],
+    "requires_params": [
+      "sessionId"
+    ]
+  },
+  {
+    "key": "teacher.reports",
+    "path": "/teacher/reports",
+    "title": "Reports",
+    "roles": [
+      "teacher"
+    ],
+    "description": "Per-course attendance report with each student's percentage and CSV export",
+    "aliases": [
+      "reports",
+      "attendance report",
+      "course report"
+    ],
+    "nav": true,
+    "icon": "reports"
+  },
+  {
+    "key": "teacher.profile",
+    "path": "/teacher/profile",
+    "title": "My Profile",
+    "roles": [
+      "teacher"
+    ],
+    "description": "Personal details, change password and face enrollment status",
+    "aliases": [
+      "profile",
+      "my account",
+      "account settings",
+      "change password",
+      "settings"
+    ],
+    "nav": true,
+    "icon": "profile"
+  },
+  {
+    "key": "student.dashboard",
+    "path": "/student",
+    "title": "Dashboard",
+    "roles": [
+      "student"
+    ],
+    "description": "Student overview: open attendance sessions, courses, outstanding invoices",
+    "aliases": [
+      "dashboard",
+      "home",
+      "overview",
+      "main page"
+    ],
+    "nav": true,
+    "icon": "dashboard"
+  },
+  {
+    "key": "student.courses",
+    "path": "/student/courses",
+    "title": "My Courses",
+    "roles": [
+      "student"
+    ],
+    "description": "Courses the student is enrolled in",
+    "aliases": [
+      "my courses",
+      "courses",
+      "classes",
+      "subjects"
+    ],
+    "nav": true,
+    "icon": "courses"
+  },
+  {
+    "key": "student.attendance",
+    "path": "/student/attendance",
+    "title": "Attendance",
+    "roles": [
+      "student"
+    ],
+    "description": "Open attendance sessions and the student's attendance percentage and history per course",
+    "aliases": [
+      "attendance",
+      "my attendance",
+      "attendance history"
+    ],
+    "nav": true,
+    "icon": "attendance"
+  },
+  {
+    "key": "student.attendance.mark",
+    "path": "/student/attendance/:sessionId/mark",
+    "title": "Mark Attendance",
+    "roles": [
+      "student"
+    ],
+    "description": "Enter the class code and verify your face to mark attendance",
+    "aliases": [
+      "mark attendance",
+      "sign in to class"
+    ],
+    "requires_params": [
+      "sessionId"
+    ]
+  },
+  {
+    "key": "student.invoices",
+    "path": "/student/finance/invoices",
+    "title": "My Invoices",
+    "roles": [
+      "student"
+    ],
+    "description": "List of the student's invoices and payment status",
+    "aliases": [
+      "invoices",
+      "bills",
+      "fees page",
+      "my payments",
+      "finance"
+    ],
+    "nav": true,
+    "icon": "invoices"
+  },
+  {
+    "key": "student.invoices.new",
+    "path": "/student/finance/invoices/new",
+    "title": "Create Invoice",
+    "roles": [
+      "student"
+    ],
+    "description": "Create an invoice from an official fee",
+    "aliases": [
+      "create invoice",
+      "new invoice"
+    ]
+  },
+  {
+    "key": "student.invoices.pay",
+    "path": "/student/finance/invoices/:id/pay",
+    "title": "Pay Invoice",
+    "roles": [
+      "student"
+    ],
+    "description": "Simulated checkout for one invoice (card or mobile money)",
+    "aliases": [
+      "pay invoice",
+      "checkout"
+    ],
+    "requires_params": [
+      "id"
+    ]
+  },
+  {
+    "key": "student.receipt",
+    "path": "/student/finance/receipts/:paymentId",
+    "title": "Receipt",
+    "roles": [
+      "student"
+    ],
+    "description": "Printable receipt of a payment",
+    "aliases": [
+      "receipt"
+    ],
+    "requires_params": [
+      "paymentId"
+    ]
+  },
+  {
+    "key": "student.profile",
+    "path": "/student/profile",
+    "title": "My Profile",
+    "roles": [
+      "student"
+    ],
+    "description": "Personal details, change password and face enrollment status",
+    "aliases": [
+      "profile",
+      "my account",
+      "account settings",
+      "change password",
+      "settings"
+    ],
+    "nav": true,
+    "icon": "profile"
+  }
+]

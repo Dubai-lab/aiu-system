@@ -1,0 +1,17 @@
+Dear {{ full_name }},
+
+Thank you - your payment was successful.
+
+*** SIMULATED PAYMENT - no real money was charged. ***
+
+  Receipt reference:   {{ reference }}
+  Invoice:             {{ invoice_number }}
+  Fee:                 {{ fee_name }}
+  Amount paid:         {{ amount }}
+  Method:              {{ method }}
+  Date:                {{ paid_at }}
+  Registration number: {{ reg_number }}
+
+View / print your receipt: {{ receipt_url }}
+
+{{ university }} Administration

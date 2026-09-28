@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Dear {{ full_name }},</p>
+<p>You have been registered successfully at {{ university }}.</p>
+{% with rows = [("Registration number (your login ID)", reg_number), ("Email on file", email), ("Default password", password)] %}{% include "_credentials.html" %}{% endwith %}
+<p>You can change your password at any time from your dashboard (<strong>Profile &gt; Change password</strong>).</p>
+<p>Once the administrator has enrolled your face, you can also log in by simply looking at your camera.</p>
+<p>{{ university }} Administration</p>
+{% endblock %}

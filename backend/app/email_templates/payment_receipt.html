@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<p>Dear {{ full_name }},</p>
+<p>Thank you - your payment was successful.</p>
+<p style="background:#fef3c7;color:#92400e;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:bold;">SIMULATED PAYMENT - no real money was charged.</p>
+{% with rows = [("Receipt reference", reference), ("Invoice", invoice_number), ("Fee", fee_name), ("Amount paid", amount), ("Method", method), ("Date", paid_at), ("Registration number", reg_number)] %}{% include "_details.html" %}{% endwith %}
+<p style="text-align:center;margin:24px 0;">
+  <a href="{{ receipt_url }}" style="background:#0b2e59;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:bold;display:inline-block;">View / print receipt</a>
+</p>
+<p>{{ university }} Administration</p>
+{% endblock %}
