@@ -86,33 +86,52 @@ Each app has a `.env.example`. Copy it to `.env` and fill it in. Real `.env` fil
 
 Set `EMAIL_MODE=console` to print emails in the backend terminal instead of sending them.
 
-## 4. Running the apps (three terminals)
+## 4. Running the apps
 
-**Backend**
+### 4.1 First-time setup (only once per computer)
+
 ```powershell
 cd backend
 py -3.12 -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-.venv\Scripts\uvicorn app.main:app --reload --port 8000
-```
-Check http://127.0.0.1:8000/health, which should show `"database": "ok"`. API docs are at http://127.0.0.1:8000/docs.
-
-**Face service**
-```powershell
-cd face-service
+.\.venv\Scripts\pip install -r requirements.txt
+cd ..\face-service
 py -3.12 -m venv .venv
-.venv\Scripts\pip install -r requirements.txt
-.venv\Scripts\uvicorn main:app --host 127.0.0.1 --port 8001
-```
-On first start InsightFace downloads `buffalo_l` (~300 MB) to `~/.insightface/models/`.
-
-**Frontend**
-```powershell
-cd frontend
+.\.venv\Scripts\pip install -r requirements.txt
+cd ..\frontend
 npm install
+```
+Skip this if the `.venv` folders and `node_modules` already exist; running it again is not needed.
+
+### 4.2 Everyday start (two PowerShell windows)
+
+**Window 1: face service** (start it first, and wait for `Application startup complete`)
+```powershell
+cd C:\Users\eg821\Desktop\aiu_system\face-service
+.\.venv\Scripts\uvicorn.exe main:app --host 127.0.0.1 --port 8001
+```
+On the very first start InsightFace downloads `buffalo_l` (~300 MB) to `~/.insightface/models/`.
+
+**Window 2: backend**
+```powershell
+cd C:\Users\eg821\Desktop\aiu_system\backend
+.\.venv\Scripts\uvicorn.exe app.main:app --host 127.0.0.1 --port 8000
+```
+Check http://127.0.0.1:8000/health, which should show `"status":"ok","database":"ok"`. API docs are at http://127.0.0.1:8000/docs.
+Do not add `--reload` on Windows: it can leave an old copy of the server running on port 8000.
+
+**Frontend:** open https://aiu-system.vercel.app (allow "local network access" when the browser asks), or run it locally in a third window:
+```powershell
+cd C:\Users\eg821\Desktop\aiu_system\frontend
 npm run dev
 ```
-Open http://localhost:5173.
+and open http://localhost:5173.
+
+Leave the windows open while you use the system; press **Ctrl+C** in a window to stop that service.
+
+**Error `[WinError 10048]` / "address already in use":** an old copy is still running. Stop it, then start again:
+```powershell
+Get-NetTCPConnection -LocalPort 8000,8001 -State Listen | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }
+```
 
 ## 5. Email (credentials, password resets)
 

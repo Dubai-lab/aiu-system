@@ -4,6 +4,8 @@
 * Sending never blocks the request: queue_email() hands the work to the
   background pool, so the admin's screen never waits for the mail server.
 * EMAIL_MODE=console prints the email in the backend terminal instead of sending.
+* EMAIL_MODE=relay sends through the Supabase Edge Function `send-email` (Gmail SMTP
+  on Supabase's side), for hosts that block outgoing SMTP such as Railway Hobby.
 * Every attempt is recorded in email_logs, so a failed credentials email can be
   shown to the admin with a "Resend" button.
 """
@@ -17,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 import aiosmtplib
+import httpx
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoescape
 
 from app.core.background import run_in_background
@@ -112,6 +115,9 @@ def _deliver(to_email: str, email: RenderedEmail) -> None:
         print(f"\n{bar}\nEMAIL (console mode) to: {to_email}\nSubject: {email.subject}\n{bar}\n{email.text}\n{bar}\n",
               flush=True)
         return
+    if s.EMAIL_MODE == "relay":
+        _deliver_via_relay(to_email, email)
+        return
     if not s.SMTP_USER or not s.SMTP_PASSWORD.get_secret_value():
         raise RuntimeError("SMTP is not configured (SMTP_USER / SMTP_PASSWORD are empty)")
     asyncio.run(
@@ -126,6 +132,40 @@ def _deliver(to_email: str, email: RenderedEmail) -> None:
             timeout=30,
         )
     )
+
+
+def _deliver_via_relay(to_email: str, email: RenderedEmail) -> None:
+    """Hand the rendered email to the Supabase Edge Function `send-email`, which sends it
+    through Gmail SMTP. Used on hosts that block outgoing SMTP (e.g. Railway Hobby):
+    the backend only makes an ordinary HTTPS request. Raises on any failure, so the
+    attempt is logged as failed in email_logs."""
+    s = get_settings()
+    key = s.EMAIL_RELAY_KEY.get_secret_value()
+    if not key:
+        raise RuntimeError("Email relay is not configured (EMAIL_RELAY_KEY is empty)")
+    response = httpx.post(
+        s.email_relay_url,
+        headers={
+            # the anon key passes Supabase's function gateway; the relay key proves it is our backend
+            "Authorization": f"Bearer {s.SUPABASE_ANON_KEY}",
+            "apikey": s.SUPABASE_ANON_KEY,
+            "x-relay-key": key,
+        },
+        json={
+            "to": to_email,
+            "subject": email.subject,
+            "html": email.html,
+            "text": email.text,
+            "from_name": s.EMAIL_FROM_NAME,
+        },
+        timeout=45,
+    )
+    if response.status_code != 200:
+        try:
+            detail = response.json().get("error") or response.text
+        except ValueError:
+            detail = response.text
+        raise RuntimeError(f"Email relay returned {response.status_code}: {str(detail)[:300]}")
 
 
 def send_now(template: str, to_email: str, context: dict[str, Any], related_user_id: str | None = None) -> bool:

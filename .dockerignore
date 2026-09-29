@@ -1,0 +1,16 @@
+# Build context for the backend image is the repository root; send only what it needs.
+**/.venv/
+**/node_modules/
+**/__pycache__/
+**/*.pyc
+**/.env
+**/.env.*
+!**/.env.example
+.git/
+frontend/
+face-service/
+Thesis/
+*.zip
+scripts/
+supabase/
+backend/tests/

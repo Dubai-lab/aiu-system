@@ -58,13 +58,23 @@ class Settings(BaseSettings):
     ATTENDANCE_LOW_THRESHOLD: float = Field(75, ge=0, le=100)
 
     # Email
-    EMAIL_MODE: Literal["smtp", "console"] = "console"
+    #   smtp    - the backend talks to the SMTP server itself (works where outgoing SMTP is allowed)
+    #   relay   - the backend POSTs the email over HTTPS to the Supabase Edge Function `send-email`,
+    #             which sends it through Gmail SMTP (for hosts that block SMTP, e.g. Railway Hobby)
+    #   console - print emails in the terminal, send nothing
+    EMAIL_MODE: Literal["smtp", "relay", "console"] = "console"
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
     SMTP_USER: str = ""
     SMTP_PASSWORD: SecretStr = SecretStr("")
     EMAIL_FROM_NAME: str = "AIU Administration"
     EMAIL_FROM_ADDRESS: str = ""
+    EMAIL_RELAY_URL: str = ""  # default: <SUPABASE_URL>/functions/v1/send-email
+    EMAIL_RELAY_KEY: SecretStr = SecretStr("")  # shared secret; must match RELAY_KEY in the Edge Function
+
+    @property
+    def email_relay_url(self) -> str:
+        return self.EMAIL_RELAY_URL or f"{self.SUPABASE_URL.rstrip('/')}/functions/v1/send-email"
 
     # App
     APP_BASE_URL: str = "http://localhost:5173"
