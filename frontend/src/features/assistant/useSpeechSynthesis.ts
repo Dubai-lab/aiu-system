@@ -33,6 +33,23 @@ export function useSpeechSynthesis() {
     };
   }, [supported]);
 
+  // iPhone/iPad (WebKit, which every iOS browser uses) only allow speech that starts
+  // inside a tap. Our replies arrive later from the server, so they would be silently
+  // blocked. Speaking one silent utterance during the user's first tap "unlocks"
+  // speech for the rest of the visit; later replies can then be spoken normally.
+  useEffect(() => {
+    if (!supported) return;
+    const events = ['touchend', 'click', 'keydown'] as const;
+    const unlock = () => {
+      const silent = new SpeechSynthesisUtterance(' ');
+      silent.volume = 0;
+      window.speechSynthesis.speak(silent);
+      events.forEach((e) => window.removeEventListener(e, unlock, true));
+    };
+    events.forEach((e) => window.addEventListener(e, unlock, true));
+    return () => events.forEach((e) => window.removeEventListener(e, unlock, true));
+  }, [supported]);
+
   const cancel = useCallback(() => {
     if (!supported) return;
     window.speechSynthesis.cancel();
@@ -41,7 +58,7 @@ export function useSpeechSynthesis() {
 
   const speak = useCallback((text: string) => {
     if (!supported || !text) return;
-    window.speechSynthesis.cancel();
+    const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(toSpeakable(text));
     utterance.lang = 'en-US';
     if (voiceRef.current) utterance.voice = voiceRef.current;
@@ -49,7 +66,13 @@ export function useSpeechSynthesis() {
     utterance.onstart = () => setSpeaking(true);
     utterance.onend = () => setSpeaking(false);
     utterance.onerror = () => setSpeaking(false);
-    window.speechSynthesis.speak(utterance);
+    if (synth.speaking || synth.pending) {
+      // Safari drops an utterance queued in the same tick as cancel(); wait a moment.
+      synth.cancel();
+      window.setTimeout(() => synth.speak(utterance), 80);
+    } else {
+      synth.speak(utterance);
+    }
   }, [supported]);
 
   return { supported, speaking, speak, cancel };
