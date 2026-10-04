@@ -60,10 +60,10 @@ const ROLE_BADGE: Record<Role, string> = {
 };
 
 /** Page column. On large screens it makes room for the open assistant panel instead of
- *  being covered by it (so e.g. the class code on the live attendance page stays visible). */
+ *  being covered by it; on phones it leaves room for the bottom sheet so the whole page can be scrolled into view (so e.g. the class code on the live attendance page stays visible). */
 function ContentColumn({ children }: { children: ReactNode }) {
   const { open } = useAssistant();
-  return <div className={`flex min-w-0 flex-1 flex-col transition-[padding] ${open ? 'lg:pr-[420px]' : ''}`}>{children}</div>;
+  return <div className={`flex min-w-0 flex-1 flex-col transition-[padding] ${open ? 'max-sm:pb-[50dvh] lg:pr-[420px]' : ''}`}>{children}</div>;
 }
 
 function Brand() {

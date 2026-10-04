@@ -4,10 +4,12 @@
  * - States: idle, listening (pulsing mic + live transcript), thinking (typing dots),
  *   speaking (animated wave; tapping the mic stops speech and starts listening).
  * - Confirmation card with Confirm / Cancel when an action needs approval.
+ * - Phones: a bottom sheet (about half the screen) so the page stays visible while the
+ *   assistant works; a button expands it to full screen. Larger screens: a side panel.
  * - Keyboard: Ctrl+K opens/closes; hold Space (panel open, no input focused) to talk; Esc closes.
  */
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { Bot, Mic, MicOff, Plus, Send, ShieldQuestion, Square, Volume2, VolumeX, X } from 'lucide-react';
+import { Bot, ChevronDown, ChevronUp, Mic, MicOff, Plus, Send, ShieldQuestion, Square, Volume2, VolumeX, X } from 'lucide-react';
 import { useAssistant } from './AssistantProvider';
 
 function Dots() {
@@ -37,6 +39,7 @@ const isTyping = (el: Element | null) =>
 export function AssistantPanel() {
   const a = useAssistant();
   const [draft, setDraft] = useState('');
+  const [expanded, setExpanded] = useState(false); // phones only: full-screen sheet
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const spaceHeld = useRef(false);
@@ -78,7 +81,8 @@ export function AssistantPanel() {
   }, [a.messages, a.status, a.pending]);
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 50);
+    // Not on phones: focusing would pop up the keyboard and hide the page again.
+    if (open && window.matchMedia('(min-width: 640px)').matches) setTimeout(() => inputRef.current?.focus(), 50);
   }, [open]);
 
   const submit = (e: FormEvent) => {
@@ -110,7 +114,9 @@ export function AssistantPanel() {
       role="dialog"
       aria-modal="false"
       aria-label="AIU Assistant"
-      className="fixed inset-y-0 right-0 z-50 flex w-full flex-col bg-white shadow-2xl ring-1 ring-slate-200 sm:w-[420px] print:hidden"
+      className={`fixed inset-x-0 bottom-0 z-50 flex flex-col overflow-hidden bg-white shadow-2xl ring-1 ring-slate-200 print:hidden ${
+        expanded ? 'top-0' : 'h-[50dvh] rounded-t-2xl'
+      } sm:inset-y-0 sm:left-auto sm:right-0 sm:h-auto sm:w-[420px] sm:rounded-none`}
     >
       <header className="flex items-center gap-2 border-b border-slate-200 bg-brand-700 px-4 py-3 text-white">
         <Bot className="size-5 text-accent-400" aria-hidden />
@@ -122,6 +128,10 @@ export function AssistantPanel() {
         <button type="button" onClick={a.newConversation} className="rounded-md p-2 hover:bg-white/10" aria-label="New conversation" title="New conversation">
           <Plus className="size-5" aria-hidden />
         </button>
+        <button type="button" onClick={() => setExpanded(!expanded)} className="rounded-md p-2 hover:bg-white/10 sm:hidden"
+          aria-label={expanded ? 'Shrink the assistant to see the page' : 'Expand the assistant to full screen'} aria-pressed={expanded}>
+          {expanded ? <ChevronDown className="size-5" aria-hidden /> : <ChevronUp className="size-5" aria-hidden />}
+        </button>
         <button type="button" onClick={() => setOpen(false)} className="rounded-md p-2 hover:bg-white/10" aria-label="Close assistant">
           <X className="size-5" aria-hidden />
         </button>
@@ -132,7 +142,7 @@ export function AssistantPanel() {
           <div className="rounded-xl bg-white p-4 text-sm text-slate-600 ring-1 ring-slate-200">
             <p className="font-medium text-slate-900">Hi! Ask me anything you'd do in this system.</p>
             <p className="mt-2">For example: "Open my invoices", "What can you do?"</p>
-            <p className="mt-2 text-xs text-slate-500">Tip: hold Space to talk, or press Ctrl+K to open and close me.</p>
+            <p className="mt-2 hidden text-xs text-slate-500 sm:block">Tip: hold Space to talk, or press Ctrl+K to open and close me.</p>
           </div>
         )}
         {a.messages.map((m) => (
@@ -175,18 +185,18 @@ export function AssistantPanel() {
         )}
       </div>
 
-      <footer className="border-t border-slate-200 bg-white p-4">
+      <footer className="border-t border-slate-200 bg-white p-3 sm:p-4">
         {!a.voiceSupported && (
           <p className="mb-3 flex items-center gap-2 rounded-lg bg-slate-100 px-3 py-2 text-xs text-slate-600">
             <MicOff className="size-4 shrink-0" aria-hidden /> Voice input works in Chrome or Edge - you can type instead.
           </p>
         )}
         {a.voiceError && <p role="alert" className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-700">{a.voiceError}</p>}
-        <div className="mb-3 flex items-center justify-center gap-3 text-sm text-slate-500" aria-live="polite">
+        <div className="mb-2 flex items-center justify-center gap-3 text-sm text-slate-500 sm:mb-3" aria-live="polite">
           {a.status === 'listening' && <span className="font-medium text-brand-700">Listening…</span>}
           {a.status === 'thinking' && <span>Thinking…</span>}
           {a.status === 'speaking' && <span className="flex items-center gap-2 text-brand-700"><Wave /> Speaking - tap the mic to interrupt</span>}
-          {a.status === 'idle' && a.voiceSupported && <span>Tap the mic or hold Space to talk</span>}
+          {a.status === 'idle' && a.voiceSupported && <span>Tap the mic<span className="hidden sm:inline"> or hold Space</span> to talk</span>}
         </div>
         <div className="flex items-center gap-3">
           {a.voiceSupported && (
