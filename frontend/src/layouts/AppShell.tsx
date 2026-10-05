@@ -16,7 +16,6 @@ import {
   BookUser,
   GraduationCap,
   LayoutDashboard,
-  LogOut,
   Mail,
   Menu,
   ScrollText,
@@ -33,6 +32,7 @@ import { AssistantPanel } from '@/features/assistant/AssistantPanel';
 import { AssistantProvider, useAssistant } from '@/features/assistant/AssistantProvider';
 import { navPagesForRole, profilePathFor } from '@/lib/pages';
 import type { Role } from '@/lib/types';
+import { UserMenu } from './UserMenu';
 
 /** pages.json "icon" name -> lucide icon. */
 const ICONS: Record<string, LucideIcon> = {
@@ -50,13 +50,6 @@ const ICONS: Record<string, LucideIcon> = {
   invoices: FileText,
   audit: ScrollText,
   email: Mail,
-};
-
-const ROLE_LABEL: Record<Role, string> = { admin: 'Admin', teacher: 'Teacher', student: 'Student' };
-const ROLE_BADGE: Record<Role, string> = {
-  admin: 'bg-purple-100 text-purple-800',
-  teacher: 'bg-emerald-100 text-emerald-800',
-  student: 'bg-sky-100 text-sky-800',
 };
 
 /** Page column. On large screens it makes room for the open assistant panel instead of
@@ -157,22 +150,15 @@ export function AppShell({ role }: { role: Role }) {
           >
             <Menu className="size-5" aria-hidden />
           </button>
-          <div className="ml-auto flex items-center gap-3">
-            <div className="hidden text-right sm:block">
-              <p className="text-sm font-medium text-slate-900">{profile?.full_name}</p>
-              <p className="text-xs text-slate-500">{profile?.reg_number ?? profile?.staff_title ?? profile?.email}</p>
-            </div>
-            <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${ROLE_BADGE[role]}`}>{ROLE_LABEL[role]}</span>
-            <button
-              type="button"
-              onClick={handleSignOut}
-              disabled={signingOut}
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 disabled:opacity-60"
-            >
-              <LogOut className="size-4" aria-hidden />
-              <span className="hidden sm:inline">Log out</span>
-            </button>
-          </div>
+          <UserMenu
+            role={role}
+            fullName={profile?.full_name ?? ''}
+            subtitle={profile?.reg_number ?? profile?.staff_title}
+            email={profile?.email}
+            profilePath={profilePath}
+            signingOut={signingOut}
+            onSignOut={handleSignOut}
+          />
         </header>
 
         {showPasswordBanner && (
